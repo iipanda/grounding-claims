@@ -27,14 +27,11 @@ Design rationale: [`docs/design.md`](docs/design.md).
 
 ### Codex
 
-Codex reads the same SKILL.md format. If you have a skill installer, paste:
+Paste into Codex:
 
 ```
 Install the grounding-claims skill from https://github.com/iipanda/grounding-claims (the skill folder is skills/grounding-claims)
 ```
-
-Or by hand: copy `skills/grounding-claims/` into `~/.codex/skills/` and restart Codex. The folder
-is self-contained; the catalogue scripts and the bootstrap workflow ship inside it.
 
 ## Usage
 
