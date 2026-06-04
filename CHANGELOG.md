@@ -17,3 +17,9 @@
 ## 0.1.3
 - Public release: internal working documents removed and replaced with `docs/design.md`; README gained
   a Usage section; example data genericized; git history squashed for the public release.
+
+## 0.1.4
+- Self-contained skill folder: the catalogue library, write-catalogue script, and bootstrap workflow
+  moved inside `skills/grounding-claims/` (scripts/ and workflows/), so a standalone install (Codex,
+  plain copy) carries everything. Paths updated across SKILL.md and references.
+- README rewritten: plainer language, shorter Codex install (skill-installer one-liner + manual copy).

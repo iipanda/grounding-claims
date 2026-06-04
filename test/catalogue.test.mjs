@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { extractEntries, validateEntry, renderCatalogue, mergeEntry, normalizeKey, BLOCK_START } from '../lib/catalogue.mjs';
+import { extractEntries, validateEntry, renderCatalogue, mergeEntry, normalizeKey, BLOCK_START } from '../skills/grounding-claims/scripts/catalogue.mjs';
 
 const SAMPLE = {
   key: 'version-capability',

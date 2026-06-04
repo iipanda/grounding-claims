@@ -41,11 +41,12 @@ repo catalogue → completeness-critic ("which load-bearing assumption fits NO s
 ## Learning (Layer 3)
 
 A repo-local `docs/assumptions/catalogue.md` holds learned shapes (human table + a JSON
-source-of-truth block), managed only via `lib/catalogue.mjs` — `mergeEntry` is idempotent by key,
-preserves an existing entry's identity fields, unions examples, and escalates weight. A repo with a
-rich docs/postmortem history can be bootstrapped by the fan-out mining workflow
-(`workflows/bootstrap-catalogue.mjs`, Claude Code Workflow runtime); elsewhere the catalogue starts
-empty and grows incrementally.
+source-of-truth block), managed only via the skill's bundled `scripts/catalogue.mjs` — `mergeEntry`
+is idempotent by key, preserves an existing entry's identity fields, unions examples, and escalates
+weight. A repo with a rich docs/postmortem history can be bootstrapped by the bundled fan-out mining
+workflow (`workflows/bootstrap-catalogue.mjs`, Claude Code Workflow runtime); elsewhere the
+catalogue starts empty and grows incrementally. Everything the skill needs ships inside the skill
+folder, so a standalone install (e.g. copying just `skills/grounding-claims/`) loses nothing.
 
 ## Validation
 

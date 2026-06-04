@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-// Usage: node scripts/write-catalogue.mjs <out.md> <entries.json> [repo]
+// Usage: node write-catalogue.mjs <out.md> <entries.json> [repo]
 import { readFileSync, writeFileSync } from 'node:fs';
-import { renderCatalogue, validateEntry } from '../lib/catalogue.mjs';
+import { renderCatalogue, validateEntry } from './catalogue.mjs';
 
 const [out, entriesPath, repo = ''] = process.argv.slice(2);
 if (!out || !entriesPath) { console.error('usage: write-catalogue.mjs <out.md> <entries.json> [repo]'); process.exit(2); }

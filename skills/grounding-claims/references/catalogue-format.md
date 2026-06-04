@@ -17,9 +17,9 @@ Rules:
 
 ## Per-repo catalogue (learned shapes)
 Path: `docs/assumptions/catalogue.md` (configurable). Human table + a JSON source-of-truth block
-between `<!-- grounding-claims-catalogue:start -->` / `:end` markers. Managed ONLY via the plugin's
-`lib/catalogue.mjs` (at the plugin root — `../../lib/catalogue.mjs` from this skill dir;
-`extractEntries` / `mergeEntry` / `renderCatalogue`) — never hand-edit the JSON block directly.
+between `<!-- grounding-claims-catalogue:start -->` / `:end` markers. Managed ONLY via the skill's
+bundled `scripts/catalogue.mjs` (`extractEntries` / `mergeEntry` / `renderCatalogue`) — never
+hand-edit the JSON block directly.
 
 Entry schema: `{ key, definition, recognitionTell, probe, weight, examples[] }`.
 
@@ -31,7 +31,7 @@ If the repo has no `docs/` directory, write both artifacts under `.grounding-cla
 
 ## Incremental append (every run)
 ```bash
-node -e "import('<plugin>/lib/catalogue.mjs').then(async m=>{
+node -e "import('<this-skill-dir>/scripts/catalogue.mjs').then(async m=>{
   const fs=require('fs'); const p='docs/assumptions/catalogue.md';
   const {meta,entries}=fs.existsSync(p)?m.extractEntries(fs.readFileSync(p,'utf8')):{meta:{},entries:[]};
   const {entries:next}=m.mergeEntry(entries, NEW_SHAPE /* {key,definition,recognitionTell,probe,weight,examples} */);

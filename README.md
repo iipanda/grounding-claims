@@ -1,81 +1,71 @@
 # grounding-claims
 
-A Claude Code plugin. A **premise gate**: before acting on a plan, the agent surfaces the
-load-bearing implicit assumptions the plan rests on, adversarially refutes each (false until
-proven), and **stops** if any load-bearing assumption is false or unverifiable.
+A premise gate for coding agents, packaged as a Claude Code plugin. Before the agent acts on a
+plan, it lists the assumptions the plan depends on, tries to disprove each one (an assumption
+counts as false until a probe proves it), and stops if a load-bearing assumption turns out false
+or can't be verified.
 
-- Engine: `skills/grounding-claims/SKILL.md` — the 9-step loop (first-principles → widen → completeness-critic → triage → route → refute → gate → persist) plus the three teeth (probe-backed evidence, probe safety, absence ≠ zero).
-- Universal assumption shapes: `skills/grounding-claims/references/seed-lens.md` (16 shapes, explicitly non-exhaustive).
-- Per-repo learned catalogue: `docs/assumptions/catalogue.md` in each target repo — bootstrapped by mining the repo's docs (`workflows/bootstrap-catalogue.mjs`), grown incrementally via `lib/catalogue.mjs` (`mergeEntry` is idempotent by key).
+Three parts:
 
-See [`docs/design.md`](docs/design.md) for the design rationale.
+- `skills/grounding-claims/SKILL.md` — the loop: derive assumptions from first principles, widen
+  with a catalogue of known shapes, triage, refute, gate.
+- `skills/grounding-claims/references/seed-lens.md` — 16 common assumption shapes, each with a
+  tripwire phrase and a cheap read-only probe. The list is deliberately not exhaustive.
+- a per-repo catalogue (`docs/assumptions/catalogue.md` in whatever repo you use it in) that
+  records the shapes caught there, so the gate improves with use.
+
+Design rationale: [`docs/design.md`](docs/design.md).
 
 ## Install
 
-From Claude Code (the repo is its own single-plugin marketplace):
+### Claude Code
+
+The repo is its own single-plugin marketplace:
 
 ```
 /plugin marketplace add iipanda/grounding-claims
 /plugin install grounding-claims@grounding-claims-marketplace
 ```
 
-Already added the marketplace before? Refresh it first: `/plugin marketplace update grounding-claims-marketplace`.
+Added the marketplace earlier? Refresh it first: `/plugin marketplace update grounding-claims-marketplace`.
+For local development, point the marketplace at your checkout instead.
 
-For local development, point the marketplace at your checkout instead:
-`/plugin marketplace add /path/to/grounding-claims-plugin`.
+### Codex
 
-### Codex CLI
-
-Codex reads skills (a folder with `SKILL.md`) from `~/.codex/skills/` — the same format this plugin
-uses. Paste this prompt into Codex and let it install itself:
+Codex reads the same SKILL.md format. If you have a skill installer, paste:
 
 ```
-Install the "grounding-claims" skill (a premise gate) for me:
-
-1. git clone https://github.com/iipanda/grounding-claims ~/.agents/grounding-claims
-2. mkdir -p ~/.codex/skills
-3. ln -s ~/.agents/grounding-claims/skills/grounding-claims ~/.codex/skills/grounding-claims
-   — if your skill discovery doesn't follow symlinks, copy the folder instead:
-   cp -R ~/.agents/grounding-claims/skills/grounding-claims ~/.codex/skills/grounding-claims
-4. Verify ~/.codex/skills/grounding-claims/SKILL.md exists and has name+description frontmatter.
-5. Note: the optional catalogue library lives at ~/.agents/grounding-claims/lib/catalogue.mjs;
-   the skill knows how to degrade if it can't reach it.
-6. Tell me exactly what you did, then remind me to restart Codex so it picks up the new skill.
+Install the grounding-claims skill from https://github.com/iipanda/grounding-claims (the skill folder is skills/grounding-claims)
 ```
 
-Codex has subagents but no Workflow fan-out — the skill's degradation rules cover that (refuters run
-sequentially). Invoke with `/skills`, a `$grounding-claims` mention, or implicitly by task match.
+Or by hand: copy `skills/grounding-claims/` into `~/.codex/skills/` and restart Codex. The folder
+is self-contained; the catalogue scripts and the bootstrap workflow ship inside it.
 
 ## Usage
 
-The skill fires on its own when you ask the agent to act on something premise-heavy — version
-upgrades, "it's merged so it works", a destructive step "covered" by an assumed backup, using an API
-tied to a specific version. You can also invoke it explicitly:
+The skill triggers on its own when a task leans on unverified premises: version upgrades, "it's
+merged so it works", a destructive step that assumes a backup exists. You can also ask directly:
+"check what this plan assumes before you run it".
 
-- *"Check what this plan assumes before you run it."*
-- *"Ground the claims in this approach."*
+A run produces:
 
-What a run produces:
+1. A ledger of assumptions, each with a verdict (TRUE, FALSE, or UNVERIFIABLE) and the probe that
+   produced it, written as `invocation → result`. No probe, no verdict.
+2. A gate decision. A false or unverifiable load-bearing assumption stops the agent, and it reports
+   the ledger instead of proceeding. Lower-weight items get logged as risks.
+3. Files in your repo: the ledger in `docs/assumptions/<topic>-<date>.md`, plus new assumption
+   shapes appended to `docs/assumptions/catalogue.md`. In a repo with a long docs or postmortem
+   history, the skill offers to mine it into a starter catalogue (opt-in, costs tokens).
 
-1. **A run-ledger** — every load-bearing assumption with a verdict (`TRUE` / `FALSE` / `UNVERIFIABLE`)
-   and probe-backed evidence in `invocation → result` form. No probe, no verdict — the skill refuses
-   to "verify" anything it didn't actually check.
-2. **A gate decision** — any load-bearing assumption that is FALSE or UNVERIFIABLE makes the agent
-   **STOP and report** instead of proceeding; lower-weight items are logged as risks and work continues.
-3. **Repo artifacts** — the ledger lands in `docs/assumptions/<topic>-<date>.md`, and newly-learned
-   assumption shapes accumulate in `docs/assumptions/catalogue.md`, so the gate gets sharper the longer
-   you use it in a repo. On first use in a repo with a rich docs/postmortem history, the skill offers
-   an opt-in bootstrap that mines that history into a starter catalogue.
-
-Works degraded in other harnesses too: with subagents but no Workflow fan-out it refutes sequentially;
-with no subagents at all the agent plays the refuter role inline (the evidence rules carry the rigor).
+In harnesses without parallel fan-out the refuters run sequentially; with no subagents at all the
+agent plays the refuter role itself. The evidence rules are the same either way.
 
 ## Develop / test
 
 ```
-node --test          # catalogue lib + structural skill tests (no deps; Node 18+)
+node --test
 ```
 
-Trigger evals live in `skills/grounding-claims/evals/` (skill-creator `run_eval.py` format in
-`trigger-evals.json`; results + interpretation in `evals/results/`). The behavioral gate scenario
-is `evals/scenarios/planted-assumptions-plan.md` + `EXPECTED.md`.
+Tests cover the catalogue library and the skill's structure (no dependencies, Node 18+). Trigger
+evals live in `skills/grounding-claims/evals/`, the behavioral scenario in
+`skills/grounding-claims/evals/scenarios/`.

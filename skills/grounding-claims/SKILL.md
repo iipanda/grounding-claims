@@ -49,12 +49,12 @@ Track the loop as a checklist (e.g. a TodoWrite item per step where available) s
 9. **Persist & learn.**
    - Write the run-ledger to `docs/assumptions/<topic>-<date>.md` (table from `references/catalogue-format.md`).
    - For each genuinely-NEW shape that surfaced (one not already in `docs/assumptions/catalogue.md`), append it
-     via the plugin's `lib/catalogue.mjs` (at the plugin root — `../../lib/catalogue.mjs` from this skill dir):
-     read the catalogue, `mergeEntry(entries, newShape)`, `renderCatalogue(...)`, write the file back — exact
-     recipe in `references/catalogue-format.md`. `mergeEntry` dedups by key, so re-running is safe.
+     via this skill's bundled `scripts/catalogue.mjs`: read the catalogue, `mergeEntry(entries, newShape)`,
+     `renderCatalogue(...)`, write the file back — exact recipe in `references/catalogue-format.md`.
+     `mergeEntry` dedups by key, so re-running is safe.
    - First use in a repo with a `docs/` history and NO catalogue yet: OFFER (opt-in — mining is token-intensive)
-     to run the bootstrap workflow if available (`workflows/bootstrap-catalogue.mjs`), then persist its entries
-     with `scripts/write-catalogue.mjs`.
+     to run the bundled bootstrap workflow if the harness supports it (`workflows/bootstrap-catalogue.mjs`
+     in this skill dir), then persist its entries with `scripts/write-catalogue.mjs`.
 
 ## The teeth (enforce regardless of mode)
 - **R1 — Evidence from a probe run THIS loop.** Every TRUE/FALSE verdict must cite evidence produced *during
@@ -77,7 +77,5 @@ Track the loop as a checklist (e.g. a TodoWrite item per step where available) s
 Steps 1–8 need only file reads, shell, and reasoning — they work in any agent harness. Known fallbacks:
 - Subagents but no Workflow fan-out (e.g. Codex) ⇒ dispatch refuters sequentially/batched for any count.
 - No subagents at all ⇒ inline refuter role (step 7 above). Sequential is fine; skipping refutation is not.
-- Skill folder installed standalone (without the plugin repo's `lib/`) ⇒ same as no-Node: write the
-  run-ledger, skip the catalogue append, and say so in the ledger.
 - No Node available ⇒ still write the run-ledger (markdown); skip the catalogue append and say so in the ledger.
 - Bootstrap mining is a Claude Code Workflow; elsewhere the catalogue simply starts empty and grows incrementally.
