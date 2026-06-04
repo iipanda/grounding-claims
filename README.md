@@ -7,9 +7,9 @@ or can't be verified.
 
 Three parts:
 
-- `skills/grounding-claims/SKILL.md` — the loop: derive assumptions from first principles, widen
+- `skills/grounding-claims/SKILL.md`: the loop. Derive assumptions from first principles, widen
   with a catalogue of known shapes, triage, refute, gate.
-- `skills/grounding-claims/references/seed-lens.md` — 16 common assumption shapes, each with a
+- `skills/grounding-claims/references/seed-lens.md`: 16 common assumption shapes, each with a
   tripwire phrase and a cheap read-only probe. The list is deliberately not exhaustive.
 - a per-repo catalogue (`docs/assumptions/catalogue.md` in whatever repo you use it in) that
   records the shapes caught there, so the gate improves with use.
@@ -20,15 +20,10 @@ Design rationale: [`docs/design.md`](docs/design.md).
 
 ### Claude Code
 
-The repo is its own single-plugin marketplace:
-
 ```
 /plugin marketplace add iipanda/grounding-claims
 /plugin install grounding-claims@grounding-claims-marketplace
 ```
-
-Added the marketplace earlier? Refresh it first: `/plugin marketplace update grounding-claims-marketplace`.
-For local development, point the marketplace at your checkout instead.
 
 ### Codex
 
@@ -73,13 +68,3 @@ catches things.
 
 In harnesses without parallel fan-out the refuters run sequentially; with no subagents at all the
 agent plays the refuter role itself. The evidence rules are the same either way.
-
-## Develop / test
-
-```
-node --test
-```
-
-Tests cover the catalogue library and the skill's structure (no dependencies, Node 18+). Trigger
-evals live in `skills/grounding-claims/evals/`, the behavioral scenario in
-`skills/grounding-claims/evals/scenarios/`.
