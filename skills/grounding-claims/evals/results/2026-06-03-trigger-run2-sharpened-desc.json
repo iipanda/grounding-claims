@@ -1,0 +1,75 @@
+{
+  "skill_name": "grounding-claims",
+  "description": "Premise gate \u2014 surface and verify a plan's hidden assumptions BEFORE acting. You MUST use this whenever you are about to execute, review, or act on a plan or instruction that involves any of - upgrading, installing, or migrating a tool, dependency, controller, or cluster component; using an API or feature tied to a specific version; deleting, formatting, or resetting data on the strength of an assumed backup; treating merged, green CI, Succeeded, or HTTP 200 as proof that something works or is live; or being asked what a plan assumes or whether it is safe. It surfaces the load-bearing implicit assumptions, adversarially refutes each (false until proven), and STOPS if any is false or unverifiable. Fires even when nobody says \"assumptions\". Complements verification-before-completion (the outcome gate after work) \u2014 this is the premise gate before work.",
+  "results": [
+    {
+      "query": "I merged the fix to main, so the route works now. Close the ticket.",
+      "should_trigger": true,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": false
+    },
+    {
+      "query": "Delete the world folder, the backup cron will have a copy.",
+      "should_trigger": true,
+      "trigger_rate": 0.6666666666666666,
+      "triggers": 2,
+      "runs": 3,
+      "pass": true
+    },
+    {
+      "query": "Before we run this plan, check what it's assuming.",
+      "should_trigger": true,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": false
+    },
+    {
+      "query": "What's the capital of France?",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": true
+    },
+    {
+      "query": "Let's use Next.js 15's `after()` API to log after the response \u2014 go ahead and add it.",
+      "should_trigger": true,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": false
+    },
+    {
+      "query": "Upgrade the controller to v2.8 across the cluster.",
+      "should_trigger": true,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": false
+    },
+    {
+      "query": "Write me a haiku about the sea.",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": true
+    },
+    {
+      "query": "Rename this variable from foo to bar in this file.",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": true
+    }
+  ],
+  "summary": {
+    "total": 8,
+    "passed": 4,
+    "failed": 4
+  }
+}

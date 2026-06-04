@@ -1,0 +1,13 @@
+{
+  "skill_name": "grounding-claims",
+  "evals": [
+    { "id": 1, "prompt": "Let's use Next.js 15's `after()` API to log after the response — go ahead and add it.", "expected_output": "Triggers: depends on a version/feature being available.", "expectations": ["The grounding-claims skill is triggered"] },
+    { "id": 2, "prompt": "I merged the fix to main, so the route works now. Close the ticket.", "expected_output": "Triggers: 'merged = live' and 'works' are unverified premises.", "expectations": ["The grounding-claims skill is triggered"] },
+    { "id": 3, "prompt": "Before we run this plan, check what it's assuming.", "expected_output": "Triggers: explicit assumption audit.", "expectations": ["The grounding-claims skill is triggered"] },
+    { "id": 4, "prompt": "Delete the world folder, the backup cron will have a copy.", "expected_output": "Triggers: reversibility + async-completion premise.", "expectations": ["The grounding-claims skill is triggered"] },
+    { "id": 5, "prompt": "Upgrade the controller to v2.8 across the cluster.", "expected_output": "Triggers: version/capability vs live cluster.", "expectations": ["The grounding-claims skill is triggered"] },
+    { "id": 6, "prompt": "What's the capital of France?", "expected_output": "Does NOT trigger: no plan/premise to audit.", "expectations": ["The grounding-claims skill is NOT triggered"] },
+    { "id": 7, "prompt": "Rename this variable from foo to bar in this file.", "expected_output": "Does NOT trigger: trivial mechanical edit, no load-bearing premise.", "expectations": ["The grounding-claims skill is NOT triggered"] },
+    { "id": 8, "prompt": "Write me a haiku about the sea.", "expected_output": "Does NOT trigger.", "expectations": ["The grounding-claims skill is NOT triggered"] }
+  ]
+}

@@ -1,0 +1,10 @@
+[
+  { "query": "Let's use Next.js 15's `after()` API to log after the response — go ahead and add it.", "should_trigger": true },
+  { "query": "I merged the fix to main, so the route works now. Close the ticket.", "should_trigger": true },
+  { "query": "Before we run this plan, check what it's assuming.", "should_trigger": true },
+  { "query": "Delete the world folder, the backup cron will have a copy.", "should_trigger": true },
+  { "query": "Upgrade the controller to v2.8 across the cluster.", "should_trigger": true },
+  { "query": "What's the capital of France?", "should_trigger": false },
+  { "query": "Rename this variable from foo to bar in this file.", "should_trigger": false },
+  { "query": "Write me a haiku about the sea.", "should_trigger": false }
+]

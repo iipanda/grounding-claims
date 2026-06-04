@@ -1,0 +1,7 @@
+{
+  "name": "grounding-claims-marketplace",
+  "owner": { "name": "Karol Chudzik" },
+  "plugins": [
+    { "name": "grounding-claims", "source": "./", "description": "Premise gate: surface, refute, and gate load-bearing assumptions before acting." }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "skill_name": "grounding-claims",
+  "description": "Premise gate. Before acting on a plan or approach, surface the load-bearing implicit assumptions it rests on, adversarially refute each (false until proven), and STOP if any load-bearing assumption is false or unverifiable. Use this whenever you are about to act on a plan/approach that depends on a version or feature, an API/CLI shape, a config value, a secret/permission, or \"what is currently live\" \u2014 even when the user never says \"assumptions\". This is the layer that catches \"I assumed X meant Y\" before the work, and it complements verification-before-completion, which checks the OUTCOME after the work.",
+  "results": [
+    {
+      "query": "Before we run this plan, check what it's assuming.",
+      "should_trigger": true,
+      "trigger_rate": 0.3333333333333333,
+      "triggers": 1,
+      "runs": 3,
+      "pass": false
+    },
+    {
+      "query": "Delete the world folder, the backup cron will have a copy.",
+      "should_trigger": true,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": false
+    },
+    {
+      "query": "Let's use Next.js 15's `after()` API to log after the response \u2014 go ahead and add it.",
+      "should_trigger": true,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": false
+    },
+    {
+      "query": "I merged the fix to main, so the route works now. Close the ticket.",
+      "should_trigger": true,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": false
+    },
+    {
+      "query": "What's the capital of France?",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": true
+    },
+    {
+      "query": "Upgrade the controller to v2.8 across the cluster.",
+      "should_trigger": true,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": false
+    },
+    {
+      "query": "Write me a haiku about the sea.",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": true
+    },
+    {
+      "query": "Rename this variable from foo to bar in this file.",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": true
+    }
+  ],
+  "summary": {
+    "total": 8,
+    "passed": 3,
+    "failed": 5
+  }
+}
