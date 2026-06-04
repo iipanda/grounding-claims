@@ -1,7 +1,7 @@
 {
   "name": "grounding-claims",
-  "description": "Premise gate — surface and verify a plan's hidden assumptions BEFORE acting. You MUST use this whenever you are about to execute, review, or act on a plan or instruction that involves any of - upgrading, installing, or migrating a tool, dependency, controller, or cluster component; using an API or feature tied to a specific version; deleting, formatting, or resetting data on the strength of an assumed backup; treating merged, green CI, Succeeded, or HTTP 200 as proof that something works or is live; or being asked what a plan assumes or whether it is safe. It surfaces the load-bearing implicit assumptions, adversarially refutes each (false until proven), and STOPS if any is false or unverifiable. Fires even when nobody says \"assumptions\". Complements verification-before-completion (the outcome gate after work) — this is the premise gate before work.",
-  "version": "0.1.4",
+  "description": "Premise gate — surface and verify a plan's hidden assumptions BEFORE acting. You MUST use this whenever you are about to execute, review, or act on a plan or instruction that involves any of - upgrading, installing, or migrating a tool, dependency, controller, or cluster component; using an API or feature tied to a specific version; deleting, formatting, or resetting data on the strength of an assumed backup; treating merged, green CI, Succeeded, or HTTP 200 as proof that something works or is live; or being asked what a plan assumes or whether it is safe. Also use when asked to build or bootstrap an assumption catalogue for a repo. It surfaces the load-bearing implicit assumptions, adversarially refutes each (false until proven), and STOPS if any is false or unverifiable. Fires even when nobody says \"assumptions\". Complements verification-before-completion (the outcome gate after work) — this is the premise gate before work.",
+  "version": "0.1.5",
   "author": {
     "name": "Karol Chudzik"
   },

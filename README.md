@@ -57,6 +57,20 @@ A run produces:
    shapes appended to `docs/assumptions/catalogue.md`. In a repo with a long docs or postmortem
    history, the skill offers to mine it into a starter catalogue (opt-in, costs tokens).
 
+### Building the catalogue for an existing repo
+
+You don't have to wait for the offer. Ask directly, in the repo you want mined:
+
+```
+Use the grounding-claims skill to bootstrap the assumption catalogue for this repo from its docs history.
+```
+
+The skill runs its bundled mining workflow over your docs (default `docs/**/*.md`, confirmable),
+clusters the assumption failures it finds, and writes `docs/assumptions/catalogue.md`. Mining a
+large history takes a while and costs tokens, so it always confirms scope first. The mining
+workflow needs Claude Code; in other harnesses the catalogue starts empty and grows as the skill
+catches things.
+
 In harnesses without parallel fan-out the refuters run sequentially; with no subagents at all the
 agent plays the refuter role itself. The evidence rules are the same either way.
 

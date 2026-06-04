@@ -1,6 +1,6 @@
 ---
 name: grounding-claims
-description: Premise gate — surface and verify a plan's hidden assumptions BEFORE acting. You MUST use this whenever you are about to execute, review, or act on a plan or instruction that involves any of - upgrading, installing, or migrating a tool, dependency, controller, or cluster component; using an API or feature tied to a specific version; deleting, formatting, or resetting data on the strength of an assumed backup; treating merged, green CI, Succeeded, or HTTP 200 as proof that something works or is live; or being asked what a plan assumes or whether it is safe. It surfaces the load-bearing implicit assumptions, adversarially refutes each (false until proven), and STOPS if any is false or unverifiable. Fires even when nobody says "assumptions". Complements verification-before-completion (the outcome gate after work) — this is the premise gate before work.
+description: Premise gate — surface and verify a plan's hidden assumptions BEFORE acting. You MUST use this whenever you are about to execute, review, or act on a plan or instruction that involves any of - upgrading, installing, or migrating a tool, dependency, controller, or cluster component; using an API or feature tied to a specific version; deleting, formatting, or resetting data on the strength of an assumed backup; treating merged, green CI, Succeeded, or HTTP 200 as proof that something works or is live; or being asked what a plan assumes or whether it is safe. Also use when asked to build or bootstrap an assumption catalogue for a repo. It surfaces the load-bearing implicit assumptions, adversarially refutes each (false until proven), and STOPS if any is false or unverifiable. Fires even when nobody says "assumptions". Complements verification-before-completion (the outcome gate after work) — this is the premise gate before work.
 ---
 
 # grounding-claims
@@ -53,8 +53,21 @@ Track the loop as a checklist (e.g. a TodoWrite item per step where available) s
      `renderCatalogue(...)`, write the file back — exact recipe in `references/catalogue-format.md`.
      `mergeEntry` dedups by key, so re-running is safe.
    - First use in a repo with a `docs/` history and NO catalogue yet: OFFER (opt-in — mining is token-intensive)
-     to run the bundled bootstrap workflow if the harness supports it (`workflows/bootstrap-catalogue.mjs`
-     in this skill dir), then persist its entries with `scripts/write-catalogue.mjs`.
+     to bootstrap the catalogue (see "Bootstrapping a repo's catalogue" below).
+
+## Bootstrapping a repo's catalogue (on request, or accepted offer)
+When the user asks to build/bootstrap the assumption catalogue for a repo — or accepts the step-9
+offer — skip the audit loop and run the bootstrap directly:
+1. Confirm scope with the user: which docs to mine (default glob: `<repo-root>/docs/**/*.md`) and a
+   reminder that mining a large history is token-intensive.
+2. Run this skill's `workflows/bootstrap-catalogue.mjs` via the Workflow tool with
+   `args = { root: "<repo-root>", glob: "<glob>" }`. It mines the docs for assumption failures and
+   returns `{ count, entries }`.
+3. Save the returned `entries` array to a temp file (e.g. `/tmp/catalogue-entries.json`), then persist:
+   `node <this-skill-dir>/scripts/write-catalogue.mjs docs/assumptions/catalogue.md /tmp/catalogue-entries.json <repo-name>`.
+4. Show the user the resulting shape table and commit the catalogue per the repo's conventions.
+If the harness has no Workflow runtime, say so and fall back: the catalogue starts empty and grows
+incrementally via step 9 of the loop.
 
 ## The teeth (enforce regardless of mode)
 - **R1 — Evidence from a probe run THIS loop.** Every TRUE/FALSE verdict must cite evidence produced *during

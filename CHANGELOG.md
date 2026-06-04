@@ -23,3 +23,8 @@
   moved inside `skills/grounding-claims/` (scripts/ and workflows/), so a standalone install (Codex,
   plain copy) carries everything. Paths updated across SKILL.md and references.
 - README rewritten: plainer language, shorter Codex install (skill-installer one-liner + manual copy).
+
+## 0.1.5
+- On-demand catalogue bootstrap: a "Bootstrapping a repo's catalogue" section in SKILL.md with the
+  exact mechanics (Workflow run + write-catalogue), a trigger phrase in the description, and a
+  README how-to. Previously the bootstrap was only offered implicitly at step 9.
